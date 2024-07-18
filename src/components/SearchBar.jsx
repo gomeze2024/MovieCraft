@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const StyledForm = styled.form`
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 0;
 `;
 

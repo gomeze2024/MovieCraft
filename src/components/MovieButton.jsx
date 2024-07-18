@@ -68,9 +68,26 @@ const MovieButton = ({ movieId }) => {
                 fetch(url).then((res) => res.json())
         );
     //error handling
-    if (error) return <div><p>Failed to Load</p></div>;
-    if (!data) return <div><p>Please Be Patient -- Loading...</p></div>;
-    
+    if (error) return <Button>
+            <Row>
+                <ImageColumn>
+                    <ButtonImg/>
+                </ImageColumn>
+                <TextColumn>
+                    <ButtonText>Failed to Load</ButtonText>
+                </TextColumn>
+            </Row>
+        </Button>;
+    if (!data) return <Button>
+        <Row>
+            <ImageColumn>
+                <ButtonImg/>
+            </ImageColumn>
+            <TextColumn>
+                <ButtonText>Loading...</ButtonText>
+            </TextColumn>
+        </Row>
+    </Button>;
     //toggles BubbleNav visiblity on double click
     const handleDoubleClick = () => {
         toggle();
