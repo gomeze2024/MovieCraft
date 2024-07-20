@@ -11,8 +11,7 @@ import OpenAI from "openai";
 */}
 
 const useMovieManager = () => {
-  const { movies, setMovies } = useContext(MovieContext);
-  const [numAddMovies, setNumAddMovies] = useState(4);
+  const { movies, setMovies, numAddMovies, setNumAddMovies } = useContext(MovieContext);
 
 
   // openAI & omdbi API Keys
@@ -49,11 +48,9 @@ const useMovieManager = () => {
       name: movieData.Title,
     };
 
-    const updatedMovies = [...movies, movie];
+    setMovies(prevMovies => [...prevMovies, movie]);
 
-    localStorage.setItem('movies', JSON.stringify(updatedMovies));
-
-    setMovies(updatedMovies);
+    localStorage.setItem('movies', JSON.stringify(movies));
   };
 
   {/*
@@ -99,7 +96,6 @@ const useMovieManager = () => {
   *   (https://www.omdbapi.com/)
   */}
   const fetchMovieId = async (name) => {
-    console.log(name);
     try {
       const response = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&t=${name}`);
       const body = await response.json();
@@ -153,7 +149,6 @@ const useMovieManager = () => {
       let movieC = await(fetchMovieId(movieTitles.join('')));
 
       if (movieC === null) {
-        console.log(`WAHHHH ${movieTitles}`);
         attempts++;
       } else {
         return movieC;

@@ -1,4 +1,3 @@
-import Draggable from 'react-draggable';
 import styled from "styled-components"
 import { v4 as uuidv4 } from 'uuid';
 import MovieButton from "./MovieButton.jsx";
@@ -6,6 +5,7 @@ import AddMovieButton from "./AddMovieButton.jsx";
 import SearchBar from './SearchBar.jsx';
 import useMovieManager from "../hooks/useMovieManager.jsx";
 import {useState, useRef, useEffect } from "react";
+import { Rnd } from "react-rnd";
 
 /*
    Draggable Screen manages a sidebar interface containing draggable buttons for movies.
@@ -61,26 +61,26 @@ export default function DraggableScreen() {
 
     const buttonRefs = useRef({});
 
-    const addDraggableButton = ({ clientX, clientY }, movieId) => {
+    const addDraggableButton = (clientX, clientY, movieId) => {
         // Generate unique key for each button
         const key = uuidv4();
 
-        //Hard-coded centering around a point, because Draggable overwrites transform.
-        //When I wrapped it in a div, it would cover the other buttons without dragging.
         if (typeof movieId === 'string') {
             const newButton = {
                 key: key,
                 movieId: movieId,
                 button: (
-                    <Draggable
+                    <Rnd
+                        default={{
+                            x: clientX,
+                            y: clientY,
+                            width: 70,
+                            height: 50
+                        }}
                         key={key}
-                        onStop={(e, data) => handleStop(e, data, key, movieId)}
+                        onDragStop={(_, d) => handleStop(d, key, movieId)}
                     >
                         <MovieButtonWrapper
-                            style={{
-                                left: clientX - 75,
-                                top: clientY - 35,
-                            }}
                             ref={ref => {
                                 buttonRefs.current[key] = { ref, movieId };
                             }}
@@ -88,7 +88,7 @@ export default function DraggableScreen() {
                         >
                             <MovieButton movieId={movieId}/>
                         </MovieButtonWrapper>
-                    </Draggable>
+                    </Rnd>
                 )
             };
 
@@ -99,7 +99,7 @@ export default function DraggableScreen() {
         }
     };
 
-    const handleStop = async (e, data, key, movieId) => {
+    const handleStop = async (d, key, movieId) => {
         //User has picked up the mouse, and we have to check if any buttons are overlapping
         const currentButton = buttonRefs.current[key];
 
@@ -118,7 +118,7 @@ export default function DraggableScreen() {
                     currentButtonRect.bottom > rect.top
                 ) {
                     //Overlap found. Delete the buttons and add a new one.
-                    await overlap(e, k, key, movieId, buttonRefs.current[k].movieId)
+                    await overlap(d, k, key, movieId, buttonRefs.current[k].movieId)
                     deleted = true;
                 }
             }
@@ -137,7 +137,7 @@ export default function DraggableScreen() {
         });
     };
 
-    const overlap = async (e, k, key, movieId1, movieId2) => {
+    const overlap = async (d, k, key, movieId1, movieId2) => {
         const newMovieId = await merge(movieId1, movieId2)
 
         const movieExists = movies.some(movie => movie.id === newMovieId);
@@ -145,6 +145,7 @@ export default function DraggableScreen() {
         if (!movieExists) {
             const audio = new Audio('/new-movie.mp3');
             await audio.play();
+
             await addMovie(newMovieId);
         }
 
@@ -155,7 +156,7 @@ export default function DraggableScreen() {
             return updatedButtons;
         });
 
-        addDraggableButton(e, newMovieId);
+        addDraggableButton(d.x, d.y, newMovieId);
     }
 
     const newMovie = async() => {
@@ -184,9 +185,6 @@ export default function DraggableScreen() {
         setSearchTerm(event.target.value);
     };
 
-    useEffect(() => {
-    }, [movies]);
-
     //I thought references would delete themselves if the buttons were gone but no.
     //Remake button refs by going through them.
     useEffect(() => {
@@ -207,7 +205,7 @@ export default function DraggableScreen() {
                     .filter(movie => movie.name.toLowerCase().includes(searchTerm.toLowerCase()))
                     .map((movie, index) => (
                         typeof movie.id === 'string' && (
-                            <CraftedButton key={index} onClick={(e) => addDraggableButton(e, movie.id)}>
+                            <CraftedButton key={index} onClick={() => addDraggableButton(5, 5, movie.id)}>
                                 <MovieButton movieId={movie.id} />
                             </CraftedButton>
                         )
