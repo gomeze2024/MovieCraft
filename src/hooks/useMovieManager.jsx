@@ -1,6 +1,7 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect} from 'react';
 import {MovieContext} from "../context/MoviesContext.jsx";
 import OpenAI from "openai";
+import {ApiContext} from "../context/ApiContent.jsx";
 
 {/*
 * useMovieManager handles:
@@ -12,14 +13,23 @@ import OpenAI from "openai";
 
 const useMovieManager = () => {
   const { movies, setMovies, numAddMovies, setNumAddMovies } = useContext(MovieContext);
+  const {key, setKey, setShowPopup} = useContext(ApiContext);
 
+  const OMBb_KEY = process.env.OMDB_KEY;
+  let openAIKey = process.env.OPENAI_KEY;
 
-  // openAI & omdbi API Keys
-  const openai = new OpenAI({
-    apiKey: "",
+  useEffect(() => {
+    console.log("ooooodahh")
+    if (key !== "") {
+      console.log("hehe")
+      openAIKey = key
+    }
+  }, [setKey]);
+
+  const OPENAI_KEY = new OpenAI({
+    apiKey: openAIKey,
     dangerouslyAllowBrowser: true,
   })
-  const API_KEY = '';
 
   useEffect(() => {
     const storedMovies = JSON.parse(localStorage.getItem('movies'));
@@ -76,12 +86,12 @@ const useMovieManager = () => {
 
   {/*
   * fetchMovieDataById
-  *   Passed in id of a movie and calls omdbapi to retrieve movie Data in form of json
+  *   Passed in id of a movie and calls OMDb API to retrieve movie Data in form of json
   *   (https://www.omdbapi.com/)
   */}
   const fetchMovieDataById = async (movieId) => {
     try {
-      const response = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movieId}`);
+      const response = await fetch(`https://www.omdbapi.com/?apikey=${OMBb_KEY}&i=${movieId}`);
       return await response.json();
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -91,13 +101,13 @@ const useMovieManager = () => {
 
   {/*
   * fetchMovieId
-  *   Passed in name of a movie and calls omdbapi to retrieve movie ID
+  *   Passed in name of a movie and calls OMDb API to retrieve movie ID
   *   If movie doesn't exist, return null
   *   (https://www.omdbapi.com/)
   */}
   const fetchMovieId = async (name) => {
     try {
-      const response = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&t=${name}`);
+      const response = await fetch(`https://www.omdbapi.com/?apikey=${OMBb_KEY}&t=${name}`);
       const body = await response.json();
       if (body.Response === "False") {
         return null;
@@ -108,11 +118,24 @@ const useMovieManager = () => {
     }
   };
 
+  const fetchMovieDataByName = async (name) => {
+    try {
+      const response = await fetch(`https://www.omdbapi.com/?apikey=${OMBb_KEY}&t=${name}`);
+      const body = await response.json();
+      if (body.Response === "False") {
+        return null;
+      }
+      return body;
+    } catch (error) {
+      return null;
+    }
+  };
+
   {/*
   * merge
   *   Passed in ids of two movies & returns a third movie of similarity
   *   openAI gpt-3.5-turbo ingests the two movies Data & returns a movie it thinks is most similar
-  *   Given 3 attempts to provide a valid movie Title that omdbi accepts; if fails, returns the first movie
+  *   Given 3 attempts to provide a valid movie Title that OMDb accepts; if fails, returns the first movie
   *   (https://platform.openai.com/docs/api-reference/introduction)
   */}
   const merge = async (movieId1, movieId2) => {
@@ -128,37 +151,43 @@ const useMovieManager = () => {
     while (attempts < 3) {
       let movieTitles = [];
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            "role": "system", "content": "You are a function that ingests information about two different" +
-                " movies, \"Movie A\" & \"Movie B\" and returns a third movie that is most similar /" +
-                " relevant to the two given movies. IMPORTANT: Return just the movie Title and nothing else in" +
-                " the format \"Movie Title\"."
-          },
-          {"role": "user", "content": content},
-        ],
-        stream: true,
-      });
+      try {
+        const completion = await OPENAI_KEY.chat.completions.create({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              "role": "system", "content": "You are a function that ingests information about two different" +
+                  " movies, \"Movie A\" & \"Movie B\" and returns a third movie that is most similar /" +
+                  " relevant to the two given movies. IMPORTANT: Return just the movie Title and nothing else in" +
+                  " the format \"Movie Title\"."
+            },
+            {"role": "user", "content": content},
+          ],
+          stream: true,
+        });
 
-      for await (const chunk of completion) {
-        movieTitles.push(chunk.choices[0].delta.content);
-      }
+        for await (const chunk of completion) {
+          movieTitles.push(chunk.choices[0].delta.content);
+        }
 
-      let movieC = await(fetchMovieId(movieTitles.join('')));
+        let movieC = await fetchMovieId(movieTitles.join(''));
 
-      if (movieC === null) {
+        if (movieC === null) {
+          attempts++;
+        } else {
+          console.log("hehe");
+          return movieC;
+        }
+      } catch (error) {
+        console.error(`Error during OpenAI API call: ${error}`);
         attempts++;
-      } else {
-        return movieC;
+        setShowPopup(true);
       }
     }
-
     return movieId1;
   };
 
-  return { movies, numAddMovies, addMovie, clearMovies, fetchMovieDataById, merge, fetchMovieId, decrementAddMovie };
+  return { movies, numAddMovies, addMovie, clearMovies, fetchMovieDataById, merge, fetchMovieId, fetchMovieDataByName, decrementAddMovie };
 
 };
 

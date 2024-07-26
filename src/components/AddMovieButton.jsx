@@ -6,8 +6,8 @@ const AddButton = styled.div`
   border: 2px dashed gray;
   background: white;
   height: 70px;
-  width: 150px;
-  border-radius: 5px;
+  width: 160px;
+  border-radius: 10px;
   box-sizing: border-box;
   color: gray;
   font-size: 24px;

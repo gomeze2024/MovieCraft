@@ -7,17 +7,17 @@ import {useState} from "react";
 const Button = styled.button`
     display: flex;
     flex-direction: row;
-    background: linear-gradient(to bottom, #ffffff, #f0f0f0);
-    border: 2px solid grey;
+    background: linear-gradient(to bottom, #ffffff, #eff8fd);
+    border: 1.5px solid #5880a3;
     align-items: center;
     height: 70px;
-    width: 150px;
-    border-radius: 5px;
+    width: 160px;
+    border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.5s;
 
     &:hover {
-        background: linear-gradient(to bottom, #ffffff, rgba(89, 165, 216, 0.5));
+        background: linear-gradient(to bottom, #ffffff, #ceebfa);
     }
 `;
 
@@ -36,6 +36,8 @@ const ButtonText = styled.p`
     align-self: center;
     text-align: left;
     pointer-events: none;
+    font-size: 14px;
+    font-weight: 550;
 `
 const ImageColumn = styled.div`
     padding-right: 10px;
@@ -54,7 +56,6 @@ const Row = styled.div`
 const MovieButton = ({ movieId }) => {
     
     const API_KEY = '7a644baa';
-
     
     //for NavBubble visiblity
     const [isVisible, setIsVisible] = useState(false);

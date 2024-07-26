@@ -17,6 +17,7 @@
     "react-draggable": "^4.4.6",
     "react-rnd": "^10.4.11",
     "react-router-dom": "^6.23.0",
+    "reactjs-popup": "^2.0.6",
     "styled-components": "^6.1.8",
     "swr": "^2.2.5",
     "uuid": "^9.0.1"

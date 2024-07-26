@@ -2,6 +2,8 @@ import styled from "styled-components"
 import DraggableScreen from "../components/DraggableScreen.jsx";
 import useMovieManager from "../hooks/useMovieManager.jsx";
 import Header from "../components/Header.jsx";
+import "reactjs-popup/dist/index.css";
+import RateLimitPopup from "../components/RateLimitPopup.jsx"
 
 /*
    Game Screen manages holds the main game screen, the sidebar, and header. A good chunk of the
@@ -102,6 +104,7 @@ export default function GameScreen() {
                 <ResetButton onClick={resetGame}>
                     Reset
                 </ResetButton>
+                <RateLimitPopup />
             </MainScreen>
             <DraggableScreen/>
         </Screen>

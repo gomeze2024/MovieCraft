@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MovieDetails from '../components/MovieDetails.jsx';
 import NavBar from "../components/NavBar.jsx";
 import {useNavigate} from 'react-router-dom';
-import { useLocation } from "react-router-dom"; // use to get tittle
+import { useLocation } from "react-router-dom"; // use to get title
 
 const StyledRow = styled.div`
     display: flex;
@@ -29,11 +29,12 @@ export default function Movies() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const title = searchParams.get("movieName");
+    const OMBb_KEY = process.env.OMDB_KEY;
 
     //use useEffect to fetch more details about the movie
     useEffect(() => {
         async function fetchData() {
-            const data = await fetch(`https://www.omdbapi.com/?apikey=e906836d&t=${title}`);
+            const data = await fetch(`https://www.omdbapi.com/?apikey=${OMBb_KEY}&t=${title}`);
             const result = await data.json();
 
             if (result) {

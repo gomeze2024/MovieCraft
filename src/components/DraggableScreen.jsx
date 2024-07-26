@@ -140,6 +140,10 @@ export default function DraggableScreen() {
     const overlap = async (d, k, key, movieId1, movieId2) => {
         const newMovieId = await merge(movieId1, movieId2)
 
+        if (newMovieId === null) {
+
+        }
+
         const movieExists = movies.some(movie => movie.id === newMovieId);
 
         if (!movieExists) {
@@ -184,6 +188,12 @@ export default function DraggableScreen() {
     const handleFormChange = event => {
         setSearchTerm(event.target.value);
     };
+
+    useEffect(()=> {
+        if (movies.length === 0) {
+            setButtons({})
+        }
+    }, [movies])
 
     //I thought references would delete themselves if the buttons were gone but no.
     //Remake button refs by going through them.
