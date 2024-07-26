@@ -141,7 +141,7 @@ export default function DraggableScreen() {
         const newMovieId = await merge(movieId1, movieId2)
 
         if (newMovieId === null) {
-
+            return;
         }
 
         const movieExists = movies.some(movie => movie.id === newMovieId);

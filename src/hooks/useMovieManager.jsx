@@ -1,4 +1,4 @@
-import {useContext, useEffect} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {MovieContext} from "../context/MoviesContext.jsx";
 import OpenAI from "openai";
 import {ApiContext} from "../context/ApiContent.jsx";
@@ -12,24 +12,27 @@ import {ApiContext} from "../context/ApiContent.jsx";
 */}
 
 const useMovieManager = () => {
-  const { movies, setMovies, numAddMovies, setNumAddMovies } = useContext(MovieContext);
+  const {movies, setMovies, numAddMovies, setNumAddMovies} = useContext(MovieContext);
   const {key, setKey, setShowPopup} = useContext(ApiContext);
+  const [openAIKey, setOpenAIKey] = useState(null);
 
   const OMBb_KEY = process.env.OMDB_KEY;
-  let openAIKey = process.env.OPENAI_KEY;
 
   useEffect(() => {
-    console.log("ooooodahh")
+  let aiKey;
     if (key !== "") {
-      console.log("hehe")
-      openAIKey = key
+      aiKey = new OpenAI({
+        apiKey: key,
+        dangerouslyAllowBrowser: true,
+      })
+    } else {
+      aiKey = new OpenAI({
+        apiKey: process.env.OPENAI_KEY,
+        dangerouslyAllowBrowser: true,
+      })
     }
-  }, [setKey]);
-
-  const OPENAI_KEY = new OpenAI({
-    apiKey: openAIKey,
-    dangerouslyAllowBrowser: true,
-  })
+    setOpenAIKey(aiKey)
+  }, [key]);
 
   useEffect(() => {
     const storedMovies = JSON.parse(localStorage.getItem('movies'));
@@ -50,7 +53,6 @@ const useMovieManager = () => {
   *   const movie structure specifies a given movies "id" & "title"
   */}
   const addMovie = async (movieId) => {
-
     const movieData = await fetchMovieDataById(movieId);
 
     const movie = {
@@ -58,9 +60,11 @@ const useMovieManager = () => {
       name: movieData.Title,
     };
 
-    setMovies(prevMovies => [...prevMovies, movie]);
-
-    localStorage.setItem('movies', JSON.stringify(movies));
+    setMovies(prevMovies => {
+      const updatedMovies = [...prevMovies, movie];
+      localStorage.setItem('movies', JSON.stringify(updatedMovies));
+      return updatedMovies;
+    });
   };
 
   {/*
@@ -152,7 +156,7 @@ const useMovieManager = () => {
       let movieTitles = [];
 
       try {
-        const completion = await OPENAI_KEY.chat.completions.create({
+        const completion = await openAIKey.chat.completions.create({
           model: "gpt-3.5-turbo",
           messages: [
             {
@@ -175,11 +179,9 @@ const useMovieManager = () => {
         if (movieC === null) {
           attempts++;
         } else {
-          console.log("hehe");
           return movieC;
         }
       } catch (error) {
-        console.error(`Error during OpenAI API call: ${error}`);
         attempts++;
         setShowPopup(true);
       }
