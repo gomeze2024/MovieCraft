@@ -64,7 +64,7 @@ const MovieButton = ({ movieId }) => {
     };
     //use SWR to make the api call
     const {data, error} =
-        useSWR(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movieId}`,
+        useSWR(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movieId}`,
             (url) =>
                 fetch(url).then((res) => res.json())
         );
