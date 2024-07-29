@@ -2,15 +2,16 @@ import styled from "styled-components";
 import { NavLink } from 'react-router-dom';
 
 const StyledBubble = styled.div`
-    position: absolute;
-    left: 18%; 
+    width: 70%;
     padding: 5px;
-    border-left: 2px solid grey;
-    border-right: 2px solid grey;
-    border-bottom: 2px solid grey;
+    border-left: 1.5px solid #5880a3;
+    border-right: 1.5px solid #5880a3;
+    border-bottom: 1.5px solid #5880a3;
     border-radius: 0 0 5px 5px;
-    z-index: 1; 
-    background-color: #f0f0f0;
+    z-index: 1;
+    background-color: #e8f4fa;
+    font-weight: 550;
+    font-size: 15px;
 `;
 
 const StyledP = styled.p `
@@ -34,7 +35,7 @@ const BubbleNav = ({ movieTitle }) => {
         <div> 
             <StyledBubble>
                 <StyledNavLink to={{ pathname: '/Movies', search: `?movieName=${movieTitle}`}}>
-                    <StyledP>more details</StyledP>
+                    <StyledP>More Details</StyledP>
                 </StyledNavLink>
             </StyledBubble>
         </div>

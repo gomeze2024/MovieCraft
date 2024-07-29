@@ -4,6 +4,15 @@ import PropTypes from "prop-types";
 import useSWR from 'swr';
 import {useState} from "react";
 
+
+const ButtonDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background-color: aliceblue;
+`
+
 const Button = styled.button`
     display: flex;
     flex-direction: row;
@@ -57,7 +66,7 @@ const MovieButton = ({ movieId }) => {
     
     const API_KEY = '7a644baa';
     
-    //for NavBubble visiblity
+    //for NavBubble visibility
     const [isVisible, setIsVisible] = useState(false);
     const toggle = () => {
         setIsVisible(!isVisible);
@@ -109,13 +118,13 @@ const MovieButton = ({ movieId }) => {
         } else if (text.length <= maxLength) {
             return text;
         } else {
-            //when it reach the maxlength, it will replace the rest with ...
+            //when it reaches the maxlength, it will replace the rest with ...
             return text.substring(0, maxLength) + '...';
         }
     };
 //limit movie title to 25 characters
     return (
-        <>
+        <ButtonDiv>
             <Button onClick={handleButtonClick} onDoubleClick={handleDoubleClick}>
                 <Row>
                     <ImageColumn>
@@ -127,7 +136,7 @@ const MovieButton = ({ movieId }) => {
                 </Row>
             </Button>
             {isVisible && <BubbleNav movieTitle={Title}/>}
-        </>
+        </ButtonDiv>
 
     );
 };
