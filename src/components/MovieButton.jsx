@@ -64,7 +64,7 @@ const Row = styled.div`
 `;
 const MovieButton = ({ movieId }) => {
     
-    const API_KEY = '7a644baa';
+    const API_KEY = process.env.OMDB_KEY;
     
     //for NavBubble visibility
     const [isVisible, setIsVisible] = useState(false);
@@ -73,6 +73,7 @@ const MovieButton = ({ movieId }) => {
     };
     //use SWR to make the api call
     const {data, error} =
+
         useSWR(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movieId}`,
             (url) =>
                 fetch(url).then((res) => res.json())
