@@ -2,8 +2,7 @@ import styled from "styled-components";
 import { NavLink } from 'react-router-dom';
 
 const StyledBubble = styled.div`
-    width: 70%;
-    padding: 5px;
+    padding: 8px;
     border-left: 1.5px solid #5880a3;
     border-right: 1.5px solid #5880a3;
     border-bottom: 1.5px solid #5880a3;
@@ -11,19 +10,23 @@ const StyledBubble = styled.div`
     z-index: 1;
     background-color: #e8f4fa;
     font-weight: 550;
-    font-size: 15px;
+    font-size: 14px;
 `;
 
 const StyledP = styled.p `
     color: black;
+
     &:hover {
-        color: blue;
+        color: #5287d1;
         text-decoration: none;
     }
 `;
 
 const StyledNavLink = styled(NavLink)`
     text-decoration: none;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-drag: none;
 `;
 {/*
 takes in a title given by MovieButton and

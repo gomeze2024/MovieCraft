@@ -31,26 +31,27 @@ const SideBar = styled.div`
 `;
 
 const CraftedButtons = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 8px;
-  
-  @media screen and (max-width: 900px) {
-    height: 100%;
-    flex-direction: column;
-  }
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 8px;
+    justify-content: center;
+    
+    @media screen and (max-width: 900px) {
+        height: 80%;
+        width: 0;
+        flex-direction: column;
+    }
   
 `
 const CraftedButton = styled.div`
-  margin-right: 4px;
-  margin-bottom: 3px;
-`;
+    margin-right: 4px;
+    margin-bottom: 3px;
+    `;
 
 const MovieButtonWrapper = styled.div`
-  position: absolute;
-  z-index: 1;
+    position: absolute;
+    z-index: 1;
 `;
 
 export default function DraggableScreen() {
@@ -86,7 +87,7 @@ export default function DraggableScreen() {
                             }}
                             onContextMenu={(e) => handleDelete(e, key)}
                         >
-                            <MovieButton movieId={movieId}/>
+                            <MovieButton movieId={movieId} draggable={true}/>
                         </MovieButtonWrapper>
                     </Rnd>
                 )
@@ -216,7 +217,7 @@ export default function DraggableScreen() {
                     .map((movie, index) => (
                         typeof movie.id === 'string' && (
                             <CraftedButton key={index} onClick={(e) => addDraggableButton(0, 0, movie.id)}>
-                                <MovieButton movieId={movie.id} />
+                                <MovieButton movieId={movie.id} draggable={false}/>
                             </CraftedButton>
                         )
                     ))}

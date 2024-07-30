@@ -2,8 +2,7 @@ import {createBrowserRouter, Route, RouterProvider, Routes} from "react-router-d
 import GameScreen from "./pages/GameScreen"
 import { createGlobalStyle } from 'styled-components';
 import Movies from "./pages/Movies";
-import {MovieProvider} from "./context/MoviesContext.jsx";
-import {ApiProvider} from "./context/ApiContent.jsx";
+import {ContextProvider} from "./context/ContextProvider.jsx";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -21,15 +20,13 @@ function Root() {
   return(
     <>
     <GlobalStyle/>
-    <MovieProvider>
-        <ApiProvider>
-            <Routes>
-              /*adds routes */
-              <Route path ='/' element = {<GameScreen/>}/>
-              <Route path = 'Movies' element = {<Movies/>}/>
-            </Routes>
-        </ApiProvider>
-    </MovieProvider>
+      <ContextProvider>
+        <Routes>
+          /*adds routes */
+          <Route path ='/' element = {<GameScreen/>}/>
+          <Route path = 'Movies' element = {<Movies/>}/>
+        </Routes>
+      </ContextProvider>
     </>
   )
 }

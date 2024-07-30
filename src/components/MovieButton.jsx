@@ -9,8 +9,8 @@ const ButtonDiv = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-content: center;
-    background-color: aliceblue;
+    align-items: center;
+    width: 160px;
 `
 
 const Button = styled.button`
@@ -62,14 +62,16 @@ const TextColumn = styled.div`
 const Row = styled.div`
     display: flex;
 `;
-const MovieButton = ({ movieId }) => {
+const MovieButton = ({ movieId, draggable }) => {
     
     const API_KEY = process.env.OMDB_KEY;
     
     //for NavBubble visibility
     const [isVisible, setIsVisible] = useState(false);
-    const toggle = () => {
-        setIsVisible(!isVisible);
+    const handleDoubleClick = () => {
+        if (draggable) {
+            setIsVisible(!isVisible);
+        }
     };
     //use SWR to make the api call
     const {data, error} =
@@ -99,10 +101,6 @@ const MovieButton = ({ movieId }) => {
             </TextColumn>
         </Row>
     </Button>;
-    //toggles BubbleNav visiblity on double click
-    const handleDoubleClick = () => {
-        toggle();
-    };
 
     //play audio when clicked
     const handleButtonClick = async () => {
