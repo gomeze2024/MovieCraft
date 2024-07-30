@@ -4,76 +4,76 @@ import styled from 'styled-components';
 import {ApiContext} from "../context/ApiContent.jsx";
 
 const StyledModal = styled.div`
-  font-size: 12px;
-  padding: 20px 10px 20px 10px;
-  align-items: center;
+    font-size: 12px;
+    padding: 20px 10px 20px 10px;
+    align-items: center;
 `;
 
 const StyledHeader = styled.div`
-  width: 100%;
-  font-size: 24px;
-  text-align: center;
-  padding-bottom: 10px;
+    width: 100%;
+    font-size: 24px;
+    text-align: center;
+    padding-bottom: 10px;
 `;
 
 const StyledDescription = styled.div`
-  width: 100%;
-  font-size: 16px;
-  color: gray;
-  text-align: center;
-  padding-bottom: 10px;
+    width: 100%;
+    font-size: 16px;
+    color: gray;
+    text-align: center;
+    padding-bottom: 10px;
 `;
 
 const StyledContent = styled.div`
-  width: 100%;
-  font-size: 14px;
-  line-height: 25px;
-  color: gray;
-  padding: 0 10px 0 10px;
+    width: 100%;
+    font-size: 14px;
+    line-height: 25px;
+    color: gray;
+    padding: 0 10px 0 10px;
 `;
 
 const StyledClose = styled.button`
-  cursor: pointer;
-  position: absolute;
-  display: block;
-  padding: 2px 5px;
-  line-height: 20px;
-  right: -10px;
-  top: -10px;
-  font-size: 24px;
-  background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #cfcece;
+    cursor: pointer;
+    position: absolute;
+    display: block;
+    padding: 2px 5px;
+    line-height: 20px;
+    right: -10px;
+    top: -10px;
+    font-size: 24px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #cfcece;
 `;
 
 const StyledForm = styled.form`
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  align-content: center;
-  justify-content: center;
-  padding-top: 10px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    padding-top: 10px;
 `;
 
 const StyledInput = styled.input`
-  width: 75%;
-  padding: 5px;
-  margin-bottom: 5px;
+    width: 75%;
+    padding: 5px;
+    margin-bottom: 5px;
 `;
 
 const StyledButton = styled.button`
-  width: 75%;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-image: linear-gradient(135deg, #6b87ed 40%, #6dd5f7);
-  color: white;
-  padding: 7px;
-  border: 0;
-  &:active {
+    width: 75%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-image: linear-gradient(135deg, #6b87ed 40%, #6dd5f7);
+    color: white;
+    padding: 7px;
+    border: 0;
+    &:active {
     transform: scale(0.96);
-  }
+    }
 `;
 
 const RateLimitPopup = () => {
@@ -87,6 +87,9 @@ const RateLimitPopup = () => {
     return (
         <Popup
             open={showPopup}
+            contentStyle={{
+                width: "90%",
+                maxWidth: "800px"}}
             onClose={() => setShowPopup(false)}
         >
             {close => (

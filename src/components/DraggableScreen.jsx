@@ -215,7 +215,7 @@ export default function DraggableScreen() {
                     .filter(movie => movie.name.toLowerCase().includes(searchTerm.toLowerCase()))
                     .map((movie, index) => (
                         typeof movie.id === 'string' && (
-                            <CraftedButton key={index} onClick={() => addDraggableButton(5, 5, movie.id)}>
+                            <CraftedButton key={index} onClick={(e) => addDraggableButton(0, 0, movie.id)}>
                                 <MovieButton movieId={movie.id} />
                             </CraftedButton>
                         )
