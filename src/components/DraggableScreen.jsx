@@ -209,6 +209,21 @@ export default function DraggableScreen() {
         buttonRefs.current = newButtonRefs;
     }, [buttons]);
 
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    const swapX = windowWidth > 900 ? -1 : 1;
+    const swapY = windowWidth < 900 ? -1 : 1;
+
+    const randomShiftX = Math.floor(Math.random() * 100) - 50;
+    const randomShiftY = Math.floor(Math.random() * 100) - 50;
+
+    const centerX = ((windowWidth / 2) * swapX) + randomShiftX;
+    const centerY = ((windowHeight / 2) * swapY) + randomShiftY;
+
+    //console.log("windowWidth: " + windowWidth.toString() + ", windowHeight: " + windowHeight.toString())
+    //console.log("centerX: " + centerX.toString() + ", centerY: " + centerY.toString())
+
     return (
         <SideBar>
             <CraftedButtons>
@@ -216,7 +231,7 @@ export default function DraggableScreen() {
                     .filter(movie => movie.name.toLowerCase().includes(searchTerm.toLowerCase()))
                     .map((movie, index) => (
                         typeof movie.id === 'string' && (
-                            <CraftedButton key={index} onClick={(e) => addDraggableButton(0, 0, movie.id)}>
+                            <CraftedButton key={index} onClick={(e) => addDraggableButton(centerX, centerY, movie.id)}>
                                 <MovieButton movieId={movie.id} draggable={false}/>
                             </CraftedButton>
                         )

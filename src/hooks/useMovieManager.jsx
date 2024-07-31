@@ -161,9 +161,10 @@ const useMovieManager = () => {
           messages: [
             {
               "role": "system", "content": "You are a function that ingests information about two different" +
-                  " movies, \"Movie A\" & \"Movie B\" and returns a third movie that is most similar /" +
-                  " relevant to the two given movies. IMPORTANT: Return just the movie Title and nothing else in" +
-                  " the format \"Movie Title\"."
+                  " movies, \"Movie A\" & \"Movie B\" and returns a third movie that the user should watch next " +
+                  " given the two provided movies. IMPORTANT: Return just the movie Title and nothing else in" +
+                  " the format \"Movie Title\". NOTE: Each request is independent of previous requests; ergo previous" +
+                  " context should not influence or bias new requests."
             },
             {"role": "user", "content": content},
           ],
