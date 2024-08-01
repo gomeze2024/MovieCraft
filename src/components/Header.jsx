@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import {useContext} from "react";
+import {ThemeContext} from "../context/ThemeContext.jsx";
 
 const HeaderWrapper = styled.div`
     display: flex;
@@ -13,6 +15,7 @@ const LeftImage = styled.img`
     width: 200px;
     height: auto;
     pointer-events: none;
+    filter: ${props => props.$islighttheme ? 'brightness(1)' : 'brightness(100)'};
 `;
 
 const RightImage = styled.img`
@@ -22,9 +25,11 @@ const RightImage = styled.img`
 `;
 //basic header with images on both sides
 function Header() {
+    const {isLightTheme} = useContext(ThemeContext)
+
     return (
         <HeaderWrapper>
-            <LeftImage src = "/logo.png" alt = "logo"/>
+            <LeftImage $islighttheme={isLightTheme} src = "/logo.png" alt = "logo"/>
             <RightImage src = "/movie.png" alt = "movie"/>
         </HeaderWrapper>
     )

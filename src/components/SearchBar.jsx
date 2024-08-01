@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import {useContext} from "react";
+import {ThemeContext} from "../context/ThemeContext.jsx";
 
 const StyledForm = styled.form`
   width: 100%;
@@ -9,15 +11,18 @@ const StyledForm = styled.form`
 
 const StyledInput = styled.input`
   width: 100%;
+  color: ${props => props.$textColor};
   font-size: 18px;
   padding: 15px 10px 15px 40px;
   outline: 1px solid lightgray;
-  border: 1px solid lightgray;
-  background: url('https://neal.fun/infinite-craft/search.svg') no-repeat 10px center white;
+  border: 0;
+  border-top: 1px solid lightgray;
+  background: url('https://neal.fun/infinite-craft/search.svg') no-repeat 10px center transparent;
   background-size: 22px;
 `
 
 const SearchBar = ({ searchTerm, handleFormChange, onSubmit }) => {
+    const {isLightTheme, light, dark} = useContext(ThemeContext)
 
     const handleSubmit = (event) => {
         if (event.key === 'Enter') {
@@ -36,6 +41,7 @@ const SearchBar = ({ searchTerm, handleFormChange, onSubmit }) => {
                     value={searchTerm}
                     onKeyDown={handleSubmit}
                     onChange={handleFormChange}
+                    $textColor={isLightTheme ? light.text : dark.text}
                 />
             </label>
         </StyledForm>

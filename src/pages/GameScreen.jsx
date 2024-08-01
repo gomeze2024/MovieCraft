@@ -16,9 +16,9 @@ const Screen = styled.div`
     width: 100vw;
     display: flex;
     flex-direction: row;
-    background-color: ${props => (props.isLightTheme ? props.light.bg : props.dark.bg)};
+    background-color: ${props => props.$backgroundColor || 'white'};
     @media screen and (max-width: 900px) {
-    flex-direction: column;
+        flex-direction: column;
     }
 `;
 
@@ -34,7 +34,7 @@ const MainScreen = styled.div`
 `;
 
 const ResetButton = styled.button`
-  background: #fff;
+  background: transparent;
   backface-visibility: hidden;
   border-color: gray;
   border-radius: .375rem;
@@ -92,7 +92,7 @@ const ResetButton = styled.button`
 `;
 
 const ThemeButton = styled.button`
-    background: #fff;
+    background: transparent;
     backface-visibility: hidden;
     border-color: gray;
     border-radius: .375rem;
@@ -158,7 +158,7 @@ export default function GameScreen() {
     };
 
     return (
-        <Screen isLightTheme={isLightTheme} light={light} dark={dark}>
+        <Screen $backgroundColor={isLightTheme ? light.bg : dark.bg}>
             <MainScreen>
                 <Header/>
                 <ResetButton onClick={resetGame}>

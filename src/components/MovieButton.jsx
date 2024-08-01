@@ -2,72 +2,83 @@ import styled from 'styled-components';
 import BubbleNav from './BubbleNav';
 import PropTypes from "prop-types";
 import useSWR from 'swr';
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {ThemeContext} from "../context/ThemeContext.jsx";
 
 
 const ButtonDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 160px;
 `
 
 const Button = styled.button`
     display: flex;
     flex-direction: row;
-    background: linear-gradient(to bottom, #ffffff, #eff8fd);
-    border: 1.5px solid #5880a3;
+    background: ${props =>
+        `linear-gradient(to bottom, 
+        ${props.$backgroundColor}, 
+        ${props.$buttonColor})`};
+    border: ${props =>
+        `1.5px solid ${props.$outlineColor}`};
     align-items: center;
     height: 70px;
     width: 160px;
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.5s;
-
+    color: ${props => props.$textColor};
+    
     &:hover {
-        background: linear-gradient(to bottom, #ffffff, #ceebfa);
+    background: ${props =>
+        `linear-gradient(to bottom, 
+        ${props.$backgroundColor}, 
+        ${props.$hoverColor})`};
     }
 `;
 
 const ButtonImg = styled.img`
-    width: 40px;
-    height: 40px;
-    overflow: hidden;
-    border-radius: 50%;
-    align-self: center;
-    pointer-events: none;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 50%;
+  align-self: center;
+  pointer-events: none;
 `
 
 const ButtonText = styled.p`
-    flex: 1;
-    overflow: hidden;
-    align-self: center;
-    text-align: left;
-    pointer-events: none;
-    font-size: 14px;
-    font-weight: 550;
+  flex: 1;
+  overflow: hidden;
+  align-self: center;
+  text-align: left;
+  pointer-events: none;
+  font-size: 14px;
+  font-weight: 550;
 `
 const ImageColumn = styled.div`
-    padding-right: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  padding-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const TextColumn = styled.div`
-    display: flex;
-    justify-content: center;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 `;
 const Row = styled.div`
-    display: flex;
+  display: flex;
 `;
 const MovieButton = ({ movieId, draggable }) => {
-    
+
     const API_KEY = process.env.OMDB_KEY;
-    
+
     //for NavBubble visibility
     const [isVisible, setIsVisible] = useState(false);
+    const {isLightTheme, light, dark} = useContext(ThemeContext)
+
     const handleDoubleClick = () => {
         if (draggable) {
             setIsVisible(!isVisible);
@@ -82,15 +93,15 @@ const MovieButton = ({ movieId, draggable }) => {
         );
     //error handling
     if (error) return <Button>
-            <Row>
-                <ImageColumn>
-                    <ButtonImg/>
-                </ImageColumn>
-                <TextColumn>
-                    <ButtonText>Failed to Load</ButtonText>
-                </TextColumn>
-            </Row>
-        </Button>;
+        <Row>
+            <ImageColumn>
+                <ButtonImg/>
+            </ImageColumn>
+            <TextColumn>
+                <ButtonText>Failed to Load</ButtonText>
+            </TextColumn>
+        </Row>
+    </Button>;
     if (!data) return <Button>
         <Row>
             <ImageColumn>
@@ -108,7 +119,7 @@ const MovieButton = ({ movieId, draggable }) => {
         const audio = new Audio('/on-click.mp3');
         await audio.play();
     };
-    
+
     const { Title, Poster } = data;
     //function to limit the number of chatacters being displayed
     const limitText = (text, maxLength) => {
@@ -124,7 +135,13 @@ const MovieButton = ({ movieId, draggable }) => {
 //limit movie title to 25 characters
     return (
         <ButtonDiv>
-            <Button onClick={handleButtonClick} onDoubleClick={handleDoubleClick}>
+            <Button $backgroundColor={isLightTheme ? light.bg : dark.bg}
+                    $buttonColor={isLightTheme ? light.primary : dark.primary}
+                    $textColor={isLightTheme ? light.text : dark.text}
+                    $outlineColor={isLightTheme ? light.outline : dark.text}
+                    $hoverColor={isLightTheme ? light.secondary : dark.secondary}
+                    onClick={handleButtonClick}
+                    onDoubleClick={handleDoubleClick}>
                 <Row>
                     <ImageColumn>
                         <ButtonImg src={Poster} alt="Poster"/>
@@ -145,4 +162,3 @@ MovieButton.propTypes = {
 };
 
 export default MovieButton;
-

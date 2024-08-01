@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import Popup from 'reactjs-popup';
 import styled from 'styled-components';
 import {ApiContext} from "../context/ApiContent.jsx";
+import {ThemeContext} from "../context/ThemeContext.jsx";
 
 const StyledModal = styled.div`
     font-size: 12px;
@@ -14,6 +15,7 @@ const StyledHeader = styled.div`
     font-size: 24px;
     text-align: center;
     padding-bottom: 10px;
+    color: ${props => props.$textColor};
 `;
 
 const StyledDescription = styled.div`
@@ -41,9 +43,10 @@ const StyledClose = styled.button`
     right: -10px;
     top: -10px;
     font-size: 24px;
-    background: #ffffff;
+    background: ${props => props.$buttonColor};
     border-radius: 18px;
     border: 1px solid #cfcece;
+    color: ${props => props.$textColor};
 `;
 
 const StyledForm = styled.form`
@@ -78,6 +81,7 @@ const StyledButton = styled.button`
 
 const RateLimitPopup = () => {
     const {key, setKey, showPopup, setShowPopup} = useContext(ApiContext);
+    const {isLightTheme, light, dark} = useContext(ThemeContext)
 
     const handleChange = event => {
         console.log("ooda ooda")
@@ -89,15 +93,17 @@ const RateLimitPopup = () => {
             open={showPopup}
             contentStyle={{
                 width: "90%",
-                maxWidth: "800px"}}
+                maxWidth: "800px",
+                backgroundColor: isLightTheme ? light.bg : dark.bg,
+                outline: "1px solid gray"}}
             onClose={() => setShowPopup(false)}
         >
             {close => (
                 <StyledModal>
-                    <StyledClose onClick={close}>
+                    <StyledClose $textColor={isLightTheme ? light.text : dark.text} $buttonColor={isLightTheme ? light.bg : dark.bg} onClick={close}>
                         &times;
                     </StyledClose>
-                    <StyledHeader> Rate Limit Reached.</StyledHeader>
+                    <StyledHeader $textColor={isLightTheme ? light.text : dark.text}> Rate Limit Reached.</StyledHeader>
                     <StyledDescription>You’ll need your own OpenAPI key to continue.</StyledDescription>
                     <StyledContent>
                         Enter the key yourself.

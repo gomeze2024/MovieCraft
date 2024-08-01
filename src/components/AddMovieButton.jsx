@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // A button component for adding new movies to sidebar.
 const AddButton = styled.div`
   border: 2px dashed gray;
-  background: white;
+  background: transparent;
   height: 70px;
   width: 160px;
   border-radius: 10px;
