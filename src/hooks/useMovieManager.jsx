@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from 'react';
 import {MovieContext} from "../context/MoviesContext.jsx";
 import OpenAI from "openai";
-import {ApiContext} from "../context/ApiContent.jsx";
+import {ApiContext} from "../context/ApiContext.jsx";
 
 {/*
 * useMovieManager handles:

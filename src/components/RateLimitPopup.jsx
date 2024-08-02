@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import Popup from 'reactjs-popup';
 import styled from 'styled-components';
-import {ApiContext} from "../context/ApiContent.jsx";
+import {ApiContext} from "../context/ApiContext.jsx";
 import {ThemeContext} from "../context/ThemeContext.jsx";
 
 const StyledModal = styled.div`

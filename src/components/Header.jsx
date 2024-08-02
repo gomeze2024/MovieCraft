@@ -18,19 +18,35 @@ const LeftImage = styled.img`
     filter: ${props => props.$islighttheme ? 'brightness(1)' : 'brightness(100)'};
 `;
 
-const RightImage = styled.img`
-    width: 50px;
-    height: auto;
-    pointer-events: none;
+const RightButton = styled.button`
+    width: 75px;
+    height: 50px;
+    border: none;
+    background: url('/movie.png') no-repeat center center;
+    background-size: contain;
+    cursor: pointer;
+    align-content: center;
+    line-height: 40px;
+    padding: 0;
+    color: ${props => props.$textColor};
+
+    &:hover {
+      transform: rotate(-20deg);
+    }
+    
+    &:not(:disabled):hover:active {
+    transform: rotate(-20deg) scale(1.05);
+    }
 `;
+
 //basic header with images on both sides
-function Header() {
-    const {isLightTheme} = useContext(ThemeContext)
+function Header({toggleVisibility}) {
+    const {isLightTheme, light, dark} = useContext(ThemeContext)
 
     return (
         <HeaderWrapper>
-            <LeftImage $islighttheme={isLightTheme} src = "/logo.png" alt = "logo"/>
-            <RightImage src = "/movie.png" alt = "movie"/>
+            <LeftImage $islighttheme={isLightTheme} src = "/logo.PNG" alt = "logo"/>
+            <RightButton onClick={toggleVisibility} $textColor={isLightTheme ? light.text : dark.text}><br/>How To Play</RightButton>
         </HeaderWrapper>
     )
 }

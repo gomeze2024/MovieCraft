@@ -3,8 +3,10 @@ import DraggableScreen from "../components/DraggableScreen.jsx";
 import useMovieManager from "../hooks/useMovieManager.jsx";
 import Header from "../components/Header.jsx";
 import RateLimitPopup from "../components/RateLimitPopup.jsx"
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {ThemeContext} from "../context/ThemeContext.jsx";
+import InstructionsPopup from "../components/InstructionsPopup.jsx";
+import {ApiContext} from "../context/ApiContext.jsx";
 
 /*
    Game Screen manages holds the main game screen, the sidebar, and header. A good chunk of the
@@ -92,14 +94,12 @@ const ResetButton = styled.button`
 `;
 
 const ThemeButton = styled.button`
+    height: 40px;
+    width: 40px;
+    border: 0;
     background: transparent;
     backface-visibility: hidden;
-    border-color: gray;
-    border-radius: .375rem;
-    border-style: solid;
-    border-width: .125rem;
     box-sizing: border-box;
-    color: gray;
     cursor: pointer;
     display: inline-block;
     font-size: 1.125rem;
@@ -117,27 +117,30 @@ const ThemeButton = styled.button`
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+    background: url('/theme-button.png') no-repeat center center;
+    background-size: contain;
+    filter: ${props => props.$islighttheme ? 'brightness(1)' : 'brightness(100)'};
     
     &:not(:disabled):hover {
-    transform: scale(1.05);
+        transform: scale(1.05);
     }
     
     &:not(:disabled):hover:active {
-    transform: scale(1.05) translateY(.125rem);
+        transform: scale(1.05) translateY(.125rem);
     }
     
     &:focus {
-    outline: 0 solid transparent;
+        outline: 0 solid transparent;
     }
     
     &:focus:before {
-    content: "";
-    left: calc(-1*.375rem);
-    pointer-events: none;
-    position: absolute;
-    top: calc(-1*.375rem);
-    transition: border-radius;
-    user-select: none;
+        content: "";
+        left: calc(-1*.375rem);
+        pointer-events: none;
+        position: absolute;
+        top: calc(-1*.375rem);
+        transition: border-radius;
+        user-select: none;
     }
     
     &:focus:not(:focus-visible) {
@@ -152,20 +155,31 @@ const ThemeButton = styled.button`
 export default function GameScreen() {
     const {clearMovies} = useMovieManager();
     const {isLightTheme, toggleTheme, light, dark} = useContext(ThemeContext)
+    const checked = JSON.parse(localStorage.getItem('instructions'));
+    const [instructionsVisible, setInstructionsVisible] = useState(isTrue(checked));
 
     const resetGame = async () => {
         await clearMovies();
     };
 
+    const toggleInstructionsVisibility = () => {
+        setInstructionsVisible(!instructionsVisible);
+    };
+
+    function isTrue(str) {
+        return str === null || str === true;
+    }
+
     return (
         <Screen $backgroundColor={isLightTheme ? light.bg : dark.bg}>
             <MainScreen>
-                <Header/>
+                <Header toggleVisibility={toggleInstructionsVisibility}/>
                 <ResetButton onClick={resetGame}>
                     Reset
                 </ResetButton>
-                <ThemeButton onClick={toggleTheme}>Change Theme</ThemeButton>
-                <RateLimitPopup />
+                <ThemeButton onClick={toggleTheme} $islighttheme={isLightTheme}/>
+                <InstructionsPopup isVisible={instructionsVisible} toggleVisibility={toggleInstructionsVisibility}/>
+                <RateLimitPopup/>
             </MainScreen>
             <DraggableScreen/>
         </Screen>

@@ -1,23 +1,28 @@
 import styled from "styled-components";
 import { NavLink } from 'react-router-dom';
+import {useContext} from "react";
+import {ThemeContext} from "../context/ThemeContext.jsx";
 
 const StyledBubble = styled.div`
     padding: 8px;
-    border-left: 1.5px solid #5880a3;
-    border-right: 1.5px solid #5880a3;
-    border-bottom: 1.5px solid #5880a3;
+    border-left: ${props =>
+        `1.5px solid ${props.$outlineColor}`};
+    border-right: ${props =>
+            `1.5px solid ${props.$outlineColor}`};
+    border-bottom: ${props =>
+            `1.5px solid ${props.$outlineColor}`};
     border-radius: 0 0 5px 5px;
     z-index: 1;
-    background-color: #e8f4fa;
+    background-color: ${props => props.$backgroundColor};
     font-weight: 550;
     font-size: 14px;
 `;
 
 const StyledP = styled.p `
-    color: black;
-
+    color: ${props => props.$textColor};
+  
     &:hover {
-        color: #5287d1;
+        color: ${props => props.$hoverColor};
         text-decoration: none;
     }
 `;
@@ -34,11 +39,16 @@ navigate to MovieDetails with the title
 */}
 
 const BubbleNav = ({ movieTitle }) => {
+    const {isLightTheme, light, dark} = useContext(ThemeContext)
+
     return (
         <div> 
-            <StyledBubble>
+            <StyledBubble
+                $backgroundColor={isLightTheme ? light.secondary : dark.secondary }
+                $outlineColor={isLightTheme ? light.outline : dark.outline }
+                >
                 <StyledNavLink to={{ pathname: '/Movies', search: `?movieName=${movieTitle}`}}>
-                    <StyledP>More Details</StyledP>
+                    <StyledP $textColor={isLightTheme ? light.text : dark.text} $hoverColor={isLightTheme ? dark.secondary : light.secondary }>More Details</StyledP>
                 </StyledNavLink>
             </StyledBubble>
         </div>
