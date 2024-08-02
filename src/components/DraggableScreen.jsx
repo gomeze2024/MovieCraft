@@ -209,20 +209,13 @@ export default function DraggableScreen() {
         buttonRefs.current = newButtonRefs;
     }, [buttons]);
 
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
+    const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
 
     const swapX = windowWidth > 900 ? -1 : 1;
     const swapY = windowWidth < 900 ? -1 : 1;
 
-    const randomShiftX = Math.floor(Math.random() * 100) - 50;
-    const randomShiftY = Math.floor(Math.random() * 100) - 50;
-
-    const centerX = ((windowWidth / 2) * swapX) + randomShiftX;
-    const centerY = ((windowHeight / 2) * swapY) + randomShiftY;
-
-    //console.log("windowWidth: " + windowWidth.toString() + ", windowHeight: " + windowHeight.toString())
-    //console.log("centerX: " + centerX.toString() + ", centerY: " + centerY.toString())
+    const centerX = (windowWidth / 2) * swapX - 70 * swapX + (Math.random() * 100 - 50);
+    const centerY = (windowHeight / 2) * swapY - 50 * swapY + (Math.random() * 100 - 50);
 
     return (
         <SideBar>
