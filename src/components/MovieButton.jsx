@@ -55,7 +55,7 @@ const ButtonText = styled.p`
   text-align: left;
   pointer-events: none;
   font-size: 14px;
-  font-weight: 550;
+  font-weight: bold;
 `
 const ImageColumn = styled.div`
   padding-right: 10px;

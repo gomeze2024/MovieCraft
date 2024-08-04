@@ -45,7 +45,7 @@ function Header({toggleVisibility}) {
 
     return (
         <HeaderWrapper>
-            <LeftImage $islighttheme={isLightTheme} src = "/logo.PNG" alt = "logo"/>
+            <LeftImage $islighttheme={isLightTheme} src = "/logo.png" alt = "logo"/>
             <RightButton onClick={toggleVisibility} $textColor={isLightTheme ? light.text : dark.text}><br/>How To Play</RightButton>
         </HeaderWrapper>
     )
