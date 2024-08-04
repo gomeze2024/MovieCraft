@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import styled from "styled-components";
 import MovieDetails from '../components/MovieDetails.jsx';
+import MovieDetaily from '../components/MovieDetaily.jsx';
 import NavBar from "../components/NavBar.jsx";
 import {useNavigate} from 'react-router-dom';
 import { useLocation } from "react-router-dom"; // use to get title
@@ -9,6 +10,7 @@ const StyledRow = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    margin-top: 60px;
 `;
 
 const StyledH5 = styled.h5`
@@ -29,12 +31,12 @@ export default function Movies() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const title = searchParams.get("movieName");
-    const OMBb_KEY = process.env.OMDB_KEY;
+    const OMBB_KEY = process.env.OMDB_KEY;
 
     //use useEffect to fetch more details about the movie
     useEffect(() => {
         async function fetchData() {
-            const data = await fetch(`https://www.omdbapi.com/?apikey=${OMBb_KEY}&t=${title}`);
+            const data = await fetch(`https://www.omdbapi.com/?apikey=${OMBB_KEY}&t=${title}`);
             const result = await data.json();
 
             if (result) {
