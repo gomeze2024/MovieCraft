@@ -1,7 +1,6 @@
 import {useState, useEffect} from "react";
 import styled from "styled-components";
 import MovieDetails from '../components/MovieDetails.jsx';
-import MovieDetaily from '../components/MovieDetaily.jsx';
 import NavBar from "../components/NavBar.jsx";
 import {useNavigate} from 'react-router-dom';
 import { useLocation } from "react-router-dom"; // use to get title
