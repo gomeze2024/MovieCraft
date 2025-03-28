@@ -23,11 +23,13 @@ const useMovieManager = () => {
     if (key !== "") {
       aiKey = new OpenAI({
         apiKey: key,
+        baseURL:"https://openrouter.ai/api/v1",
         dangerouslyAllowBrowser: true,
       })
     } else {
       aiKey = new OpenAI({
         apiKey: process.env.OPENAI_KEY,
+        baseURL:"https://openrouter.ai/api/v1",
         dangerouslyAllowBrowser: true,
       })
     }
@@ -157,7 +159,7 @@ const useMovieManager = () => {
 
       try {
         const completion = await openAIKey.chat.completions.create({
-          model: "gpt-3.5-turbo",
+          model: "google/gemini-2.0-flash-thinking-exp:free",
           messages: [
             {
               "role": "system", "content": "You are a function that ingests information about two different" +
