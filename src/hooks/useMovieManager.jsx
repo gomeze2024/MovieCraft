@@ -140,9 +140,8 @@ const useMovieManager = () => {
   {/*
   * merge
   *   Passed in ids of two movies & returns a third movie of similarity
-  *   openAI gpt-3.5-turbo ingests the two movies Data & returns a movie it thinks is most similar
+  *   openrouter meta-llama/llama-3.3-70b-instruct:free ingests the two movies Data & returns a movie it thinks is most similar
   *   Given 3 attempts to provide a valid movie Title that OMDb accepts; if fails, returns the first movie
-  *   (https://platform.openai.com/docs/api-reference/introduction)
   */}
   const merge = async (movieId1, movieId2) => {
     const [movieData1, movieData2] = await Promise.all([
@@ -159,16 +158,20 @@ const useMovieManager = () => {
 
       try {
         const completion = await openAIKey.chat.completions.create({
-          model: "google/gemini-2.0-flash-thinking-exp:free",
+          model: "meta-llama/llama-3.3-70b-instruct:free",
           messages: [
             {
-              "role": "system", "content": "You are a function that ingests information about two different" +
+              "role": "system",
+              "content": "You are a function that ingests information about two different" +
                   " movies, \"Movie A\" & \"Movie B\" and returns a third movie that the user should watch next " +
                   " given the two provided movies. IMPORTANT: Return just the movie Title and nothing else in" +
                   " the format \"Movie Title\". NOTE: Each request is independent of previous requests; ergo previous" +
                   " context should not influence or bias new requests."
             },
-            {"role": "user", "content": content},
+            {
+              "role": "user",
+              "content": content
+            },
           ],
           stream: true,
         });
